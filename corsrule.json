@@ -1,0 +1,21 @@
+{
+    "cors": [
+        {
+            "allowedHeaders": [
+                "*"
+            ],
+            "allowedMethods": [
+                "GET",
+                "PUT",
+                "POST",
+                "DELETE"
+            ],
+            "allowedOrigins": [
+                "http://localhost:5173"
+            ],
+            "exposeHeaders": [
+                "ETag"
+            ]
+        }
+    ]
+}
