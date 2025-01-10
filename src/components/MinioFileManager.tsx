@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { useDropzone } from 'react-dropzone';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 // Define interfaces
 interface MinioConfig {
@@ -52,7 +53,7 @@ const MinioFileManager: React.FC = () => {
       setFiles(response.Contents || []);
     } catch (error) {
       console.error('Error fetching files:', error);
-      alert('ไม่สามารถดึงรายการไฟล์ได้');
+      // alert('ไม่สามารถดึงรายการไฟล์ได้');
     }
     setLoading(false);
   };
@@ -146,12 +147,40 @@ const MinioFileManager: React.FC = () => {
     return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
   };
 
+ const handleViewDocument = async (fileName: string) => {
+     try {
+       const command = new GetObjectCommand({
+         Bucket: MINIO_CONFIG.bucket,
+         Key: fileName,
+       });
+ 
+       // สร้าง signed URL ที่มีอายุ 1 ชั่วโมง (3600 วินาที)
+       const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+       
+       // เปิดลิงก์ในหน้าต่างใหม่
+       window.open(signedUrl, '_blank');
+     } catch (error) {
+       console.error('Error generating document URL:', error);
+       alert('ไม่สามารถเปิดเอกสารได้');
+     }
+   };
+
   return (
     <div className="p-4">
       <div
         {...getRootProps()}
         className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 h-[200px]"
-        style={{ transition: 'border-color 0.2s ease-in-out', height: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '2px', borderColor: 'rgb(255, 255, 255)', borderRadius: '8px' }}
+        style={{
+          transition: 'border-color 0.2s ease-in-out',
+          height: '200px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '2px dashed rgb(128, 128, 128)', // เปลี่ยนสีให้ชัดเจนขึ้น
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // เพิ่มเงาให้กรอบ
+          cursor: 'pointer',
+        }}
       >
         <input {...getInputProps()} />
         <p>{uploading ? 'กำลังอัพโหลด...' : 'ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือกไฟล์'}</p>
@@ -163,9 +192,9 @@ const MinioFileManager: React.FC = () => {
           <p>กำลังโหลดรายการไฟล์...</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border">
+            <table className="min-w-full bg-white border" style={{ borderCollapse: 'separate', borderSpacing: '5rem 0rem' }}>
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-gray-100" style={{ whiteSpace: 'nowrap' }}>
                   <th className="px-6 py-3 border-b text-left">ชื่อไฟล์</th>
                   <th className="px-6 py-3 border-b text-left">ขนาด</th>
                   <th className="px-6 py-3 border-b text-left">วันที่แก้ไข</th>
@@ -174,24 +203,33 @@ const MinioFileManager: React.FC = () => {
               </thead>
               <tbody>
                 {files.map((file) => (
-                  <tr key={file.Key} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 border-b">{file.Key}</td>
+                  <tr key={file.Key} className="hover:bg-gray-50" style={{ transition: 'background-color 0.2s', gap: '0.5rem' }}>
+                    <td className="px-6 py-4 border-b">{file.Key?.split('/').pop()}</td>
                     <td className="px-6 py-4 border-b">{formatFileSize(file.Size)}</td>
                     <td className="px-6 py-4 border-b">
                       {file.LastModified?.toLocaleString('th-TH')}
                     </td>
-                    <td className="px-6 py-4 border-b text-center">
+                    <td className="px-6 py-4 border-b text-center" style={{ whiteSpace: 'nowrap', gap: '0.5rem', marginLeft: '1rem' }}>
                       <button
                         onClick={() => file.Key && downloadFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        style={{ margin: '0.1rem' }}
                       >
                         ดาวน์โหลด
                       </button>
                       <button
                         onClick={() => file.Key && deleteFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        style={{ margin: '0.1rem' }}
                       >
                         ลบ
+                      </button>
+                      <button
+                        onClick={() => handleViewDocument(`/${file.Key}`)}
+                        className="text-blue-500 hover:underline"
+                        style={{ margin: '0.1rem' }}
+                      >
+                      ดู
                       </button>
                     </td>
                   </tr>
