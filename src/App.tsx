@@ -4,7 +4,7 @@ import MinioFileManager from './components/MinioFileManager';
 function App() {
   return (
     <div className="p-4">
-    <h1 className="text-2xl font-bold mb-4">จัดการไฟล์ MinIO</h1>
+    <h2 style={{ fontWeight: 'bold' }}>จัดการไฟล์ MinIO</h2>
     <MinioFileManager />
   </div>
   );
