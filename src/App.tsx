@@ -1,6 +1,4 @@
-// import { useEffect, useState } from 'react'
 import './App.css'
-// import FileUploader from './components/FileUploader';
 import MinioFileManager from './components/MinioFileManager';
 
 function App() {

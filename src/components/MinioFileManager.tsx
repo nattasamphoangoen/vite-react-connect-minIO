@@ -166,13 +166,14 @@ const MinioFileManager: React.FC = () => {
    };
 
   return (
-    <div className="p-4">
+    <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
       <div
         {...getRootProps()}
-        className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 h-[200px]"
+        className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500"
         style={{
           transition: 'border-color 0.2s ease-in-out',
-          height: '200px',
+          height: '150px',
+          width: '800px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -180,12 +181,12 @@ const MinioFileManager: React.FC = () => {
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // เพิ่มเงาให้กรอบ
           cursor: 'pointer',
+          margin: '0 0 1rem 0',
         }}
       >
         <input {...getInputProps()} />
         <p>{uploading ? 'กำลังอัพโหลด...' : 'ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือกไฟล์'}</p>
       </div>
-      
       <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">รายการไฟล์</h3>
         {loading ? (
@@ -211,25 +212,25 @@ const MinioFileManager: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 border-b text-center" style={{ whiteSpace: 'nowrap', gap: '0.5rem', marginLeft: '1rem' }}>
                       <button
+                        onClick={() => handleViewDocument(`/${file.Key}`)}
+                        className="text-blue-500 hover:underline"
+                        style={{ margin: '0.1rem', color: 'green', border: '1px solid green' }}
+                      >
+                      ดู
+                      </button>
+                      <button
                         onClick={() => file.Key && downloadFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        style={{ margin: '0.1rem' }}
+                        style={{ margin: '0.1rem', color: 'purple', border: '1px solid purple' }}
                       >
                         ดาวน์โหลด
                       </button>
                       <button
                         onClick={() => file.Key && deleteFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                        style={{ margin: '0.1rem' }}
+                        style={{ margin: '0.1rem', color: 'red', border: '1px solid red' }}
                       >
                         ลบ
-                      </button>
-                      <button
-                        onClick={() => handleViewDocument(`/${file.Key}`)}
-                        className="text-blue-500 hover:underline"
-                        style={{ margin: '0.1rem' }}
-                      >
-                      ดู
                       </button>
                     </td>
                   </tr>
