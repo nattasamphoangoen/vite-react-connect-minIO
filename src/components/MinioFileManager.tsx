@@ -163,8 +163,14 @@ const MinioFileManager: React.FC = () => {
 
   // ฟังก์ชันแปลงขนาดไฟล์
   const formatFileSize = (bytes?: number): string => {
-    if (bytes === undefined) return "0 MB";
-    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    // if (bytes === undefined) return "0 MB";
+    // return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    if (bytes === undefined) return "0 B";
+    if (bytes === 0) return "0 B";
+    const k = 1024;
+    const sizes = ["B", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
   };
 
   const handleViewDocument = async (fileName: string) => {
