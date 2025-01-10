@@ -50,7 +50,17 @@ const MinioFileManager: React.FC = () => {
       });
       
       const response = await s3Client.send(command);
-      setFiles(response.Contents || []);
+      setFiles(response.Contents?.sort((a, b) => {
+        const dateA = a?.LastModified?.toLocaleString('th-TH');
+        const dateB = b?.LastModified?.toLocaleString('th-TH');
+  
+        // ตรวจสอบให้แน่ใจว่าทั้ง dateA และ dateB เป็น string ก่อนเปรียบเทียบ
+        if (dateA && dateB) {
+          return new Date(dateB).getTime() - new Date(dateA).getTime();
+        }
+  
+        return 0; // กรณีที่ไม่สามารถเปรียบเทียบได้
+      }) || []);
     } catch (error) {
       console.error('Error fetching files:', error);
       // alert('ไม่สามารถดึงรายการไฟล์ได้');
