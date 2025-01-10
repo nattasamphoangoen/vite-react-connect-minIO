@@ -265,7 +265,9 @@ const MinioFileManager: React.FC = () => {
                         marginLeft: "1rem",
                       }}
                     >
-                      {(file.Key?.toLowerCase().endsWith(".pdf") && (
+                      {([".pdf", ".png", ".jpg", ".jpeg"].some((ext) =>
+                        file.Key?.toLowerCase().endsWith(ext)
+                      ) && (
                         <button
                           onClick={() => handleViewDocument(`/${file.Key}`)}
                           className="text-blue-500 hover:underline"
