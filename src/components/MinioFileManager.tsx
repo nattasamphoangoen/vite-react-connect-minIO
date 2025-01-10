@@ -166,16 +166,6 @@ const MinioFileManager: React.FC = () => {
    };
 
   return (
-<<<<<<< HEAD
-    <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500"
-        style={{
-          transition: 'border-color 0.2s ease-in-out',
-          height: '150px',
-          width: '800px',
-=======
     <div className="p-4">
       <div
         {...getRootProps()}
@@ -183,7 +173,6 @@ const MinioFileManager: React.FC = () => {
         style={{
           transition: 'border-color 0.2s ease-in-out',
           height: '200px',
->>>>>>> 8499921cbcdbe4230a0de85015d42065600a9ff8
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -191,19 +180,12 @@ const MinioFileManager: React.FC = () => {
           borderRadius: '8px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // เพิ่มเงาให้กรอบ
           cursor: 'pointer',
-<<<<<<< HEAD
-          margin: '0 0 1rem 0',
-=======
->>>>>>> 8499921cbcdbe4230a0de85015d42065600a9ff8
         }}
       >
         <input {...getInputProps()} />
         <p>{uploading ? 'กำลังอัพโหลด...' : 'ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือกไฟล์'}</p>
       </div>
-<<<<<<< HEAD
-=======
       
->>>>>>> 8499921cbcdbe4230a0de85015d42065600a9ff8
       <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">รายการไฟล์</h3>
         {loading ? (
@@ -229,34 +211,15 @@ const MinioFileManager: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 border-b text-center" style={{ whiteSpace: 'nowrap', gap: '0.5rem', marginLeft: '1rem' }}>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleViewDocument(`/${file.Key}`)}
-                        className="text-blue-500 hover:underline"
-                        style={{ margin: '0.1rem', color: 'green', border: '1px solid green' }}
-                      >
-                      ดู
-                      </button>
-                      <button
-                        onClick={() => file.Key && downloadFile(file.Key)}
-                        className="mx-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        style={{ margin: '0.1rem', color: 'purple', border: '1px solid purple' }}
-=======
                         onClick={() => file.Key && downloadFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                         style={{ margin: '0.1rem' }}
->>>>>>> 8499921cbcdbe4230a0de85015d42065600a9ff8
                       >
                         ดาวน์โหลด
                       </button>
                       <button
                         onClick={() => file.Key && deleteFile(file.Key)}
                         className="mx-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-<<<<<<< HEAD
-                        style={{ margin: '0.1rem', color: 'red', border: '1px solid red' }}
-                      >
-                        ลบ
-                      </button>
-=======
                         style={{ margin: '0.1rem' }}
                       >
                         ลบ
@@ -268,7 +231,6 @@ const MinioFileManager: React.FC = () => {
                       >
                       ดู
                       </button>
->>>>>>> 8499921cbcdbe4230a0de85015d42065600a9ff8
                     </td>
                   </tr>
                 ))}
